@@ -3,7 +3,20 @@ services:
   wpe:
     restart: always
     build: ./wpe
-    privileged: true
+    depends_on:
+      - nextcloud
+    network_mode: host
+    devices:
+      - "/dev/fb0:/dev/fb0"
+      - "/dev/vchiq:/dev/vchiq"
+  nextcloud:
+    restart: always
+    build: ./nextcloud-proxy
+    ports:
+      - "9000:9000"
+    expose: 
+      - "9000"
+    network_mode: host
   scheduler:
     restart: always
     build: ./scheduler
