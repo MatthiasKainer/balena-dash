@@ -119,9 +119,12 @@ const startServer = () => {
 
         if (url === '/random.jpg') {
             file('random.jpg', res, (data) => {
-                const next = Math.floor(Math.random() * cache.size);
+                const nextIndex = Math.floor(Math.random() * cache.size);
                 console.log(`Loading image ${next} from set with ${cache.size} elements...`);
-                const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/files/download/${[...cache][next]}`;
+                const next = [...cache][nextIndex];
+                cache.delete(next);
+                if (cache.size < 5) fillCache("");
+                const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/files/download/${}`;
                 get(url_files, asImg).then(() => { console.log('Downloaded new image'); });
                 return data;
             });
