@@ -65,7 +65,7 @@ function get(url, onComplete) {
 
 const fillCache = (location) => {
     if (location === undefined) return;
-    const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/files/list?location=${location}&mediatypes=image%2Fpng%3Bimage%2Fjpeg%3Bimage%2Fgif%3Bimage%2Fx-xbitmap%3Bimage%2Fbmp`;
+    const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/api/files/list?location=${location}&mediatypes=image%2Fpng%3Bimage%2Fjpeg%3Bimage%2Fgif%3Bimage%2Fx-xbitmap%3Bimage%2Fbmp`;
     get(url_files, asJson).then(response => {
         const oldSize = cache.size;
         response.files.forEach(file => cache.add(file.nodeid));
@@ -124,7 +124,7 @@ const startServer = () => {
                 const next = [...cache][nextIndex];
                 cache.delete(next);
                 if (cache.size < 5) fillCache("");
-                const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/files/download/${next}`;
+                const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/api/files/download/${next}`;
                 get(url_files, asImg).then(() => { console.log('Downloaded new image'); });
                 return data;
             });
