@@ -33,10 +33,9 @@
       height: 100%;
       background:  no-repeat center center fixed;
       background-size: contain;
-      /*transform: rotate(180deg);
       -webkit-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
-      transform: rotate(180deg);*/
+      transform: rotate(180deg);
       -webkit-transition-property: background-image 300ms ease-in 200ms;
       -moz-transition-property: background-image 300ms ease-in 200ms;
       -o-transition-property: background-image 300ms ease-in 200ms;
@@ -136,7 +135,7 @@
   }
 
   setInterval(() => showTime(), 50);
-  setInterval(() => changeBackgroundImage(), 1000);
+  setInterval(() => changeBackgroundImage(), 30 * 1000);
 </script>
 
 </html>
