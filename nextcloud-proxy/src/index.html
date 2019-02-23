@@ -7,31 +7,136 @@
 
   <title>Nextcloud gallery</title>
   <meta name="description" content="Proxy page for nextcloud gallery">
-  <meta http-equiv="refresh" content="30">
   <meta name="author" content="mkainer">
   <style>
-    html, body {
+    @font-face {
+      font-family: 'Digital-7';
+      src: url('Digital-7.ttf.woff') format('woff'),
+        url('Digital-7.ttf.svg#Digital-7') format('svg'),
+        url('Digital-7.ttf.eot'),
+        url('Digital-7.ttf.eot?#iefix') format('embedded-opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    html,
+    body {
       width: 100%;
       height: 100%;
-      padding:0px; 
+      padding: 0px;
       margin: 0px;
       background-color: black;
     }
-    body > div {
+
+    .background {
       width: 100%;
       height: 100%;
-      background: url(random.jpg) no-repeat center center fixed;
+      background:  no-repeat center center fixed;
       background-size: contain;
-      transform: rotate(180deg);
+      /*transform: rotate(180deg);
       -webkit-transform: rotate(180deg);
-          -ms-transform: rotate(180deg);
-              transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+      transform: rotate(180deg);*/
+      -webkit-transition-property: background-image 300ms ease-in 200ms;
+      -moz-transition-property: background-image 300ms ease-in 200ms;
+      -o-transition-property: background-image 300ms ease-in 200ms;
+      transition: background-image 300ms ease-in 200ms;
+      
+    }
+
+    .clock {
+      position: absolute;
+      font-family: 'Digital-7';
+      top: 5px;
+      left: 5px;
+      width: 200px;
+      height: 60px;
+      font-size: 50px;
+      color: white;
+      opacity: 0.7;
+      transform: rotate(180deg);
+      text-align: right;
+      overflow: visible;
+      vertical-align: text-bottom;
+    }
+
+    .clock * {
+      margin-top: 5px;
+    }
+
+    .clock .character {
+      display: inline-block;
+      width: 24px;
+      text-align: right;
+      padding: 5px 0;
+      overflow: visible;
     }
   </style>
 </head>
 
 <body>
-  <div></div>
+  <div class="background" style="background-image: url(random.jpg);"></div>
+  <div id="clock" class="clock"></div>
 </body>
+<script>
+  function create(value) {
+    return [...value.toString()].map(character => {
+      const element = document.createElement("span");
+      element.className = "character";
+      element.innerText = character;
+      return element;
+    });
+  }
+
+  function join(...elements) {
+    return elements.map(current => {
+      if (current.toString() === "[object HTMLSpanElement]") return current;
+      return document.createTextNode(current);
+    })
+  }
+
+  function showTime() {
+    try {
+      const offset = 1;
+      // create Date object for current location
+      var d = new Date();
+
+      // convert to msec
+      // subtract local time zone offset
+      // get UTC time in msec
+      var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+
+      // create new Date object for different city
+      // using supplied offset
+      var date = new Date(utc + (3600000 * offset));
+      var h = date.getHours(); // 0 - 23
+      var m = date.getMinutes(); // 0 - 59
+      var s = date.getSeconds(); // 0 - 59
+
+      h = (h < 10) ? "0" + h : h;
+      m = (m < 10) ? "0" + m : m;
+      s = (s < 10) ? "0" + s : s;
+
+      var time = join(...create(h), ":", ...create(m), ":", ...create(s));
+      var clock = document.getElementById("clock");
+      while (clock.firstChild) {
+        clock.removeChild(clock.firstChild);
+      }
+      time.forEach(element => {
+        clock.appendChild(element);
+      });
+    } catch (err) {
+
+    }
+  }
+
+  function changeBackgroundImage() {
+    const img = document.getElementsByClassName("background")[0];
+    img.style.backgroundImage = `url("random.jpg?t=${new Date().getTime()}")`;
+  }
+
+  setInterval(() => showTime(), 50);
+  setInterval(() => changeBackgroundImage(), 1000);
+</script>
 
 </html>
