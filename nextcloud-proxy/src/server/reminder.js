@@ -5,7 +5,7 @@ const DateProvider = () => {
 }
 
 const Reminder = (reminders, dateProvider) => {
-    dateProvider = (!dateProvider) ? DateProvider : dateProvider
+    dateProvider = dateProvider || DateProvider;
 
     let innerReminders = [];
     const sortReminders = () => {
@@ -39,7 +39,7 @@ const Reminder = (reminders, dateProvider) => {
     }
 
     this.next = () => {
-        let now = ((!dateProvider) ? DateProvider() : dateProvider());
+        let now = dateProvider();
         const activeReminder = innerReminders[0];
         if (now.getDay() === activeReminder.day &&
             now.getUTCHours() >= activeReminder.hour) {

@@ -1,15 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700");
 
-@font-face {
-    font-family: 'Digital-7';
-    src: url('Digital-7.ttf.woff') format('woff'),
-        url('Digital-7.ttf.svg#Digital-7') format('svg'),
-        url('Digital-7.ttf.eot'),
-        url('Digital-7.ttf.eot?#iefix') format('embedded-opentype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 html,
 body {
     width: 100%;
