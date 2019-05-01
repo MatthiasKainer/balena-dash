@@ -1,4 +1,5 @@
 #!/bin/sh
 
 cd /var/nextcloud-proxy
+npm install
 node app.js

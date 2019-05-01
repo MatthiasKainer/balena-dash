@@ -4,81 +4,16 @@ const fs = require('fs');
 const path = require('path');
 https.globalAgent.maxSockets = 1;
 require('dotenv').config();
-const cache = new Set();
-const loadedAlbums = new Set();
+
+const { prepareNext, fillCache } = require("./server/nextcloud");
 
 const mimeType = {
     '.html': 'text/html',
+    '.js': 'text/javascript',
+    '.json': 'appplication/json',
     '.jpg': 'image/jpeg',
+    '.svg': 'image/svg+xml',
 };
-
-function asImg(response) {
-
-    return new Promise((resolve, reject) => {
-        try {
-            var file = fs.createWriteStream('random.jpg');
-            response.pipe(file);
-            file.on('finish', function () {
-                file.close(() => resolve());
-            });
-        } catch (err) {
-            console.log(err);
-            reject(err);
-        }
-    });
-}
-
-function asJson(response) {
-    return new Promise((resolve, reject) => {
-        let body = '';
-        response.on('data', function (d) {
-            body += d;
-        });
-        response.on('end', function () {
-            return resolve(JSON.parse(body));
-        });
-    });
-}
-
-function get(url, onComplete) {
-    const { NEXTCLOUD_USER, NEXTCLOUD_KEY, NEXTCLOUD_HOST } = process.env;
-    const Authorization = 'Basic ' + Buffer.from(`${NEXTCLOUD_USER}:${NEXTCLOUD_KEY}`).toString('base64');
-    return new Promise((resolve, reject) => {
-        try {
-            https.get(url, {
-                headers: {
-                    Authorization
-                }
-            }, (response) => {
-                if (response.statusCode !== 200) {
-                    console.log(`Request to ${url} failed with status ${response.statusCode}!`);
-                    return reject(response);
-                }
-                onComplete(response)
-                    .then(resolve)
-                    .catch(reject);
-            });
-        } catch (err) { console.log(err); reject(err); }
-    })
-}
-
-
-const fillCache = (location) => {
-    if (location === undefined) return;
-    const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/api/files/list?location=${location}&mediatypes=image%2Fpng%3Bimage%2Fjpeg%3Bimage%2Fgif%3Bimage%2Fx-xbitmap%3Bimage%2Fbmp`;
-    get(url_files, asJson).then(response => {
-        const oldSize = cache.size;
-        response.files.forEach(file => cache.add(file.nodeid));
-        Object.keys(response.albums).forEach(albumKey => {
-            const album = response.albums[albumKey];
-            if (!album.path || album.path === '') return;
-            if (loadedAlbums.has(album.path)) return;
-            loadedAlbums.add(album.path);
-            fillCache(album.path);
-        });
-        console.log(`Cache size grown from ${oldSize} to ${cache.size}, loaded ${loadedAlbums.size} albums`);
-    });
-}
 
 const file = (pathname, res, transform = (data) => data) => {
     console.log(`Loading ${pathname}...`)
@@ -117,19 +52,25 @@ const startServer = () => {
         // server code
         console.log(`${method} ${url}`);
 
-        if (url === '/random.jpg') {
-            file('random.jpg', res, (data) => {
-                const nextIndex = Math.floor(Math.random() * cache.size);
-                console.log(`Loading image ${nextIndex} from set with ${cache.size} elements...`);
-                const next = [...cache][nextIndex];
-                cache.delete(next);
-                if (cache.size < 5) fillCache("");
-                const url_files = `https://${process.env.NEXTCLOUD_HOST}/index.php/apps/gallery/api/files/download/${next}`;
-                get(url_files, asImg).then(() => { console.log('Downloaded new image'); });
+        if (url.indexOf("/Digital-7") === 0) {
+            file(url.substr(1), res);
+        }
+        else if (url === '/ios_clock.svg') {
+            file("ios_clock.svg", res);
+        }
+        else if (url === '/next') {
+            file('next.json', res, (data) => {
+                prepareNext();
                 return data;
             });
         }
-        else file(`index.html`, res, (data) => data);
+        else if (url.indexOf('/random.jpg') === 0) {
+            file('random.jpg', res, (data) => {
+                prepareNext();
+                return data;
+            });
+        }
+        else file(`index.html`, res);
     }).listen(9000);
 
     console.log('Server listening on port 9000');

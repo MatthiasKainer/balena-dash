@@ -1,0 +1,65 @@
+{
+    "files": [
+        {
+            "path": "rootImg.jpg",
+            "nodeid": 12316,
+            "mtime": 1547927418,
+            "etag": "54ee7cba61c8fa4630bd31f9edb6663e",
+            "size": 1831083,
+            "sharedwithuser": false,
+            "owner": {
+                "uid": "mkainer",
+                "displayname": "Matthias Kainer"
+            },
+            "permissions": 27,
+            "mimetype": "image\/jpeg"
+        },
+        {
+            "path": "Sub\/Folder\/folderimg.jpg",
+            "nodeid": 13701,
+            "mtime": 1546431465,
+            "etag": "02e807a6b11ff72fc2e9fdcf05431429",
+            "size": 495488,
+            "sharedwithuser": false,
+            "owner": {
+                "uid": "mkainer",
+                "displayname": "Matthias Kainer"
+            },
+            "permissions": 27,
+            "mimetype": "image\/jpeg"
+        }
+    ],
+    "albums": {
+        "": {
+            "path": "",
+            "nodeid": 191,
+            "mtime": 1550835333,
+            "etag": "5c6fde85eb400",
+            "size": 471566483996,
+            "sharedwithuser": false,
+            "owner": {
+                "uid": "mkainer",
+                "displayname": "Matthias Kainer"
+            },
+            "permissions": 31,
+            "freespace": 2390764085248
+        },
+        "Sub\/Folder": {
+            "path": "Sub\/Folder",
+            "nodeid": 42796,
+            "mtime": 1548698280,
+            "etag": "5c4f42a866906",
+            "size": 1219955651,
+            "sharedwithuser": false,
+            "owner": {
+                "uid": "mkainer",
+                "displayname": "Matthias Kainer"
+            },
+            "permissions": 31,
+            "freespace": 2390764085248
+        }
+    },
+    "albumconfig": [],
+    "albumpath": "",
+    "updated": true
+}

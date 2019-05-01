@@ -1,0 +1,37 @@
+{
+    "files": [
+        {
+            "path": "Sub\/Folder\/folderimg.jpg",
+            "nodeid": 13701,
+            "mtime": 1546431465,
+            "etag": "02e807a6b11ff72fc2e9fdcf05431429",
+            "size": 495488,
+            "sharedwithuser": false,
+            "owner": {
+                "uid": "mkainer",
+                "displayname": "Matthias Kainer"
+            },
+            "permissions": 27,
+            "mimetype": "image\/jpeg"
+        }
+    ],
+    "albums": {
+        "Sub\/Folder": {
+            "path": "Sub\/Folder",
+            "nodeid": 27170,
+            "mtime": 1548701539,
+            "etag": "5c4f4f6335bf8",
+            "size": 9528590279,
+            "sharedwithuser": false,
+            "owner": {
+                "uid": "mkainer",
+                "displayname": "Matthias Kainer"
+            },
+            "permissions": 31,
+            "freespace": 2390764085248
+        }
+    },
+    "albumconfig": [],
+    "albumpath": "Pictures",
+    "updated": true
+}
