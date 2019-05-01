@@ -6,39 +6,14 @@ const img = document.getElementsByClassName("background")[0];
     container.addEventListener(eventType, () => {
         container.style.display = "none";
         fetch('/reminder', {
-            method: "POST" }).then(() => {
-
-            })
-        reminders();
+            method: "POST" })
+        registeredHandlers["reminders"].stopped = false;
     });
     img.addEventListener(eventType, () => {
-        changeBackgroundImage();
+        registeredHandlers["background-image"].ticks = 0;
     })
 });
 
-let reminderTimeout;
-
-function reminders() {
-    if (reminderTimeout) clearTimeout(reminderTimeout);
-    remindersTimeout = setTimeout(() => {
-        fetch('/reminder')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (activeReminder) {
-                if (activeReminder !== null) {
-                    const { message } = activeReminder;
-                    container.querySelector(".message h1").innerText = message.headline;
-                    container.querySelector(".message p").innerText = message.text;
-                    container.style.display = "block";
-                } else {
-                    reminders();
-                }
-            });
-    }, 1000)
-}
-
-reminders()
 
 function sameDay(d1, d2) {
     return d1.getFullYear() === d2.getFullYear() &&
@@ -112,10 +87,38 @@ function formatDate(date) {
     return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 }
 
+const registeredHandlers = {};
 
-let backgroundTimeout;
+registeredHandlers["clock"] = {
+    ticks: 1,
+    duration: 1,
+    run: showTime
+}
+registeredHandlers["background-image"] = {
+    ticks: 1200,
+    duration: 1200,
+    run: changeBackgroundImage
+}
+registeredHandlers["reminders"] = {
+    ticks: 1200,
+    duration: 1200,
+    run: reminders
+}
+
+function eventLoop() {
+    Object.keys(registeredHandlers).forEach(handlerName => {
+        const handler = registeredHandlers[handlerName];
+        handler.ticks--;
+        if (!handler.stopped && handler.ticks < 0) {
+            handler.run();
+            handler.ticks = handler.duration;
+        }
+    })
+    setTimeout(eventLoop, 50)
+} 
+eventLoop();
+
 function changeBackgroundImage() {
-    if (backgroundTimeout) clearTimeout(backgroundTimeout);
     try {
         fetch('/next')
             .then(function (response) {
@@ -125,7 +128,20 @@ function changeBackgroundImage() {
                 img.style.backgroundImage = `url("${myJson.result}")`;
             });
     } catch (err) {}
-    backgroundTimeout = setTimeout(() => changeBackgroundImage(), 60 * 1000)
 }
 
-setInterval(() => showTime(), 50);
+function reminders() {
+    fetch('/reminder')
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (activeReminder) {
+            if (activeReminder !== null) {
+                const { message } = activeReminder;
+                container.querySelector(".message h1").innerText = message.headline;
+                container.querySelector(".message p").innerText = message.text;
+                container.style.display = "block";
+                registeredHandlers["reminders"].stopped = true;
+            }
+        });
+}

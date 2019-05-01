@@ -1,3 +1,4 @@
 .env
+next.json
 node_modules
 coverage
