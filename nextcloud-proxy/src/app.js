@@ -13,6 +13,7 @@ const mimeType = {
     '.json': 'appplication/json',
     '.jpg': 'image/jpeg',
     '.svg': 'image/svg+xml',
+    '.css': 'text/css'
 };
 
 const file = (pathname, res, transform = (data) => data) => {
@@ -53,10 +54,16 @@ const startServer = () => {
         console.log(`${method} ${url}`);
 
         if (url.indexOf("/Digital-7") === 0) {
-            file(url.substr(1), res);
+            file("assets/" + url.substr(1), res);
         }
         else if (url === '/ios_clock.svg') {
-            file("ios_clock.svg", res);
+            file("assets/ios_clock.svg", res);
+        }
+        else if (url === "/css") {
+            file("assets/styles.css", res);
+        }
+        else if (url === "/js") {
+            file("assets/script.js", res);
         }
         else if (url === '/next') {
             file('next.json', res, (data) => {

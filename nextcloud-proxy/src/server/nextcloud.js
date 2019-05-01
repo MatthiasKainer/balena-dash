@@ -27,11 +27,11 @@ const fillCache = async (location) => {
 }
 
 const prepareNext = async () => {
-    const nextIndex = Math.floor(Math.random() * cache.size);
-    console.log(`Loading image ${nextIndex} from set with ${cache.size} elements...`);
-    const next = [...cache][nextIndex];
-    cache.delete(next);
     try {
+        const nextIndex = Math.floor(Math.random() * cache.size);
+        console.log(`Loading image ${nextIndex} from set with ${cache.size} elements...`);
+        const next = [...cache][nextIndex];
+        cache.delete(next);
         const [id, mtime] = next.split("|");
         await download(id, mtime);
         console.log('Downloaded new image');
