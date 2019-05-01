@@ -14,7 +14,14 @@
   },
   "jest": {
     "collectCoverage": true,
-    "coverageReporters": ["json", "html", "text"],
-    "coveragePathIgnorePatterns" : ["node_modules", "request.js"]
+    "coverageReporters": [
+      "json",
+      "html",
+      "text"
+    ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "request.js"
+    ]
   }
 }
