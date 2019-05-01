@@ -35,7 +35,7 @@ describe("nextcloud", () => {
             });
             it("should add all nodes", () => {
                 expect([...cache].length).toBe(2);
-                expect([...cache]).toEqual([12316, 13701]);
+                expect([...cache]).toEqual(["12316|1547927418", "13701|1546431465"]);
             });
             it("should traverse all directories", () => {
                 expect([...loadedAlbums]).toEqual(["Sub/Folder"])
@@ -81,7 +81,7 @@ describe("nextcloud", () => {
             })
             it("should download the correct file", async () => {
                 expect(request.download).toBeCalledTimes(1);
-                expect([12316, 13701]).toEqual(
+                expect(["12316", "1547927418","13701", "1546431465"]).toEqual(
                     expect.arrayContaining(request.download.mock.calls[0])
                 );
             });

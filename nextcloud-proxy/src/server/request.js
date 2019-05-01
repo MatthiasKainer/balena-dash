@@ -16,6 +16,27 @@ function asImg(response) {
     });
 }
 
+function asDataItem(response, meta) {
+    return new Promise((resolve, reject) => {
+        try {
+            response.setEncoding('base64');
+            let body = "data:" + response.headers["content-type"] + ";base64,";
+            response.on('data', (data) => { body += data});
+            response.on('end', () => {
+                fs.writeFile('next.json', JSON.stringify({ 
+                    result: body, 
+                    meta
+                }), { encoding: "UTF-8"}, (err) => {
+                    return err ? reject(err) : resolve();
+                })
+            });
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    })
+}
+
 function asJson(response) {
     return new Promise((resolve, reject) => {
         let body = '';
@@ -46,7 +67,7 @@ function get(path, onComplete) {
         try {
             https.get(options, (response) => {
                 if (response.statusCode !== 200) {
-                    console.log(`Request to ${url} failed with status ${response.statusCode}!`);
+                    console.log(`Request to ${options.path} failed with status ${response.statusCode}!`);
                     return reject(response);
                 }
                 onComplete(response)
@@ -60,9 +81,9 @@ function get(path, onComplete) {
     })
 }
 
-function download(image) {
-    const url_files = `/index.php/apps/gallery/api/files/download/${image}`;
-    return get(url_files, asImg);
+function download(image, mtime) {
+    const url_files = `/index.php/apps/gallery/api/preview/${image}/800/800`;
+    return get(url_files, (response) => asDataItem(response, { time : mtime * 1000 }));
 }
 
 function listFiles(location) {

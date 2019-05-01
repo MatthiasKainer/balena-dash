@@ -14,7 +14,7 @@ const fillCache = async (location) => {
         throw err;
     }
     const oldSize = cache.size;
-    response.files.forEach(file => cache.add(file.nodeid));
+    response.files.forEach(file => cache.add(`${file.nodeid}|${file.mtime}`));
     Object.keys(response.albums).forEach(albumKey => {
         const album = response.albums[albumKey];
         if (!album.path || album.path === '') return;
@@ -32,7 +32,8 @@ const prepareNext = async () => {
     const next = [...cache][nextIndex];
     cache.delete(next);
     try {
-        await download(next);
+        const [id, mtime] = next.split("|");
+        await download(id, mtime);
         console.log('Downloaded new image');
     } catch (err) {
         console.log("oh dear...");

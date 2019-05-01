@@ -10,6 +10,7 @@ const { prepareNext, fillCache } = require("./server/nextcloud");
 const mimeType = {
     '.html': 'text/html',
     '.js': 'text/javascript',
+    '.json': 'appplication/json',
     '.jpg': 'image/jpeg',
     '.svg': 'image/svg+xml',
 };
@@ -58,7 +59,10 @@ const startServer = () => {
             file("ios_clock.svg", res);
         }
         else if (url === '/next') {
-
+            file('next.json', res, (data) => {
+                prepareNext();
+                return data;
+            });
         }
         else if (url.indexOf('/random.jpg') === 0) {
             file('random.jpg', res, (data) => {
