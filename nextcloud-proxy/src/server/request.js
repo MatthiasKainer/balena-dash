@@ -82,7 +82,7 @@ function get(path, onComplete) {
 }
 
 function download(image, mtime) {
-    const url_files = `/index.php/apps/gallery/api/preview/${image}/800/800`;
+    const url_files = `/index.php/apps/gallery/api/preview/${image}/600/600`;
     return get(url_files, (response) => asDataItem(response, { time : mtime * 1000 }));
 }
 

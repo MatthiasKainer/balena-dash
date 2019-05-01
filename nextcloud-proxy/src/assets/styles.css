@@ -29,10 +29,11 @@ body {
     height: 100%;
     background: no-repeat center center fixed;
     background-size: contain;
-    -webkit-transition-property: background-image 900ms ease-in 600ms;
-    -moz-transition-property: background-image 900ms ease-in 600ms;
-    -o-transition-property: background-image 900ms ease-in 600ms;
-    transition: background-image 900ms ease-in 600ms;
+    -webkit-transition-property: background-image 1.5s ease-in 1.5s;
+    -moz-transition-property: background-image 1.5s ease-in 1.5s;
+    -o-transition-property: background-image 1.5s ease-in 1.5s;
+    transition: background-image 1.5s ease-in 1.5s;
+    will-change: transition;
 
 }
 
