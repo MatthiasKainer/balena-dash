@@ -1,0 +1,61 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Nextcloud gallery</title>
+    <meta name="description" content="Proxy page for nextcloud gallery">
+    <meta name="author" content="mkainer">
+    <link media="all" rel="stylesheet" href="/css" />
+</head>
+
+<body>
+    <div id="form-container" class="on">
+        <div id="success-box">
+            <div class="dot"></div>
+            <div class="dot two"></div>
+            <form>
+                <div class="message">
+                    <h1 class="alert">Create a new reminder</h1>
+                    <div>
+                        <div class="weekDays-selector">
+                            <input type="checkbox" id="weekday-mon" class="weekday" />
+                            <label for="weekday-mon">Mon</label>
+                            <input type="checkbox" id="weekday-tue" class="weekday" />
+                            <label for="weekday-tue">Tue</label>
+                            <input type="checkbox" id="weekday-wed" class="weekday" />
+                            <label for="weekday-wed">Wed</label>
+                            <input type="checkbox" id="weekday-thu" class="weekday" />
+                            <label for="weekday-thu">Thu</label>
+                            <input type="checkbox" id="weekday-fri" class="weekday" />
+                            <label for="weekday-fri">Fri</label>
+                            <input type="checkbox" id="weekday-sat" class="weekday" />
+                            <label for="weekday-sat">Sat</label>
+                            <input type="checkbox" id="weekday-sun" class="weekday" />
+                            <label for="weekday-sun">Sun</label>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="headline" />
+                    </div>
+                    <div>
+                        <input type="text" placeholder="text" />
+                    </div>
+                    <div>
+                        <label>
+                            <input type="numer" placeholder="how often? (keep empty for unlimited)" />
+                        </label>
+                    </div>
+                </div>
+                <button class="button-box">
+                    <h1 class="red">Make it done</h1>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js"></script>
+</body>
+
+</html>

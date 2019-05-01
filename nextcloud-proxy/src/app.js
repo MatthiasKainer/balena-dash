@@ -99,6 +99,9 @@ const startServer = () => {
                 return data;
             });
         }
+        else if (url === '/reminder.html') {
+            file(`reminder.html`, res);
+        }
         else file(`index.html`, res);
     }).listen(9000);
 

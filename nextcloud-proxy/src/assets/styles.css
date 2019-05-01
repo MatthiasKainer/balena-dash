@@ -94,6 +94,52 @@ body {
     right: 0;
     left: 0;
 }
+#form-container {
+    position: absolute;
+    margin: auto;
+    overflow: hidden;
+    display: block;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+#form-container input, select {
+    width: 80%;
+}
+#form-container .message > div {
+    margin: 5px 0px;
+}
+.weekDays-selector input {
+    display: none!important;
+  }
+  
+  .weekDays-selector input[type=checkbox] + label {
+    display: inline-block;
+    border-radius: 6px;
+    background: #dddddd;
+    height: 40px;
+    margin-right: 3px;
+    padding:0px 3px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    background: #FCFCFC;
+    outline: 0;
+    border: none;
+    box-shadow: 2px 2px 10px rgba(119, 119, 119, 0.5);
+    transition: all .5s ease-in-out;
+  }
+  
+.weekDays-selector input[type=checkbox] + label:hover {
+    background: #efefef;
+    transform: scale(1.05);
+    transition: all .3s ease-in-out;
+}
+  .weekDays-selector input[type=checkbox]:checked + label {
+    background: #e96075 ;
+    color: #ffffff;
+  }
 
 #container h1 {
     font-size: 0.9em;
@@ -131,6 +177,17 @@ body {
     cursor: pointer;
 }
 
+#success-box {
+    position: absolute;
+    width: 35%;
+    height: 100%;
+    left: 12%;
+    background: linear-gradient(to bottom right, #B0DB7D 40%, #99DBB4 100%);
+    border-radius: 20px;
+    box-shadow: 5px 5px 20px rgba(#CBCDD3, 10%);
+    perspective: 40px;
+  }
+  
 #error-box {
     position: absolute;
     width: 35%;
@@ -242,7 +299,17 @@ body {
     animation: move 3s ease-in-out infinite;
 }
 
-.message {
+
+
+#success-box .message {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    height: 80%;
+    top: 20%;
+}
+
+#error-box .message {
     position: absolute;
     width: 100%;
     text-align: center;
