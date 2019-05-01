@@ -12,7 +12,7 @@ const reminders = [
 ]
 
 const container = document.getElementById("container");
-["click", "touchstart"].forEach(eventType => {
+["click", "touchstart", "touchend", "touchmove"].forEach(eventType => {
     container.addEventListener(eventType, () => {
         container.style.display = "none";
         lastTrashDay = getNow();
