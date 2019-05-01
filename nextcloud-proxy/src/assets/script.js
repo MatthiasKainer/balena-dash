@@ -12,11 +12,16 @@ const reminders = [
 ]
 
 const container = document.getElementById("container");
+const img = document.getElementsByClassName("background")[0];
+
 ["click", "touchstart", "touchend", "touchmove"].forEach(eventType => {
     container.addEventListener(eventType, () => {
         container.style.display = "none";
         lastTrashDay = getNow();
     });
+    img.addEventListener(eventType, () => {
+        changeBackgroundImage();
+    })
 });
 
 const activeReminder = reminders[0];
@@ -112,16 +117,19 @@ function formatDate(date) {
 }
 
 
+let backgroundTimeout;
 function changeBackgroundImage() {
-    fetch('/next')
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (myJson) {
-            const img = document.getElementsByClassName("background")[0];
-            img.style.backgroundImage = `url("${myJson.result}")`;
-        });
+    if (backgroundTimeout) clearTimeout(backgroundTimeout);
+    try {
+        fetch('/next')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                img.style.backgroundImage = `url("${myJson.result}")`;
+            });
+    } catch (err) {}
+    backgroundTimeout = setTimeout(() => changeBackgroundImage(), 60 * 1000)
 }
 
 setInterval(() => showTime(), 50);
-setInterval(() => changeBackgroundImage(), 60 * 1000);
