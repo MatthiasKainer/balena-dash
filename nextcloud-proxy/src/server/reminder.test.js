@@ -22,6 +22,7 @@ describe("Reminders", () => {
             {
                 day: 0,
                 hour: 3,
+                occurences: 1,
                 message: {
                     headline: "It's sunday morning!",
                     text: "Did you bring out the trash yet?"
@@ -46,10 +47,38 @@ describe("Reminders", () => {
                 date = "2019-05-01T15:00:00.000Z";
                 reminder = Reminder(reminders, dateProvider);
             })
-            
+
             it("should bring the reminders in order of next execution", () => {
                 const ordered = ["It's wednesday afternoon!", "It's sunday morning!", "It's sunday afternoon!", "It's wednesday morning!"];
                 const current = reminder.all();
+                while(ordered.length > 0) {
+                    expect(current.shift().message.headline).toBe(ordered.shift());
+                }
+            })
+
+            it("should return the active event", () => {
+                expect(reminder.next().message.headline).toBe("It's wednesday afternoon!");
+            })
+        })
+
+        describe("When adding an item to the reminders", () => {
+            beforeEach(() => {
+                date = "2019-05-01T15:00:00.000Z";
+                reminder = Reminder(reminders, dateProvider);
+                reminder.add( {
+                    day: 1,
+                    hour: 7,
+                    message: {
+                        headline: "It's Monday!",
+                        text: "Do wake up for work"
+                    }
+                });
+            })
+
+            it("should bring the reminders in order of next execution", () => {
+                const ordered = ["It's wednesday afternoon!", "It's sunday morning!", "It's sunday afternoon!", "It's Monday!", "It's wednesday morning!"];
+                const current = reminder.all();
+                expect(ordered.length).toBe(current.length);
                 while(ordered.length > 0) {
                     expect(current.shift().message.headline).toBe(ordered.shift());
                 }
@@ -70,6 +99,7 @@ describe("Reminders", () => {
             it("should bring the reminders in order of next execution", () => {
                 const ordered = ["It's wednesday afternoon!", "It's sunday morning!", "It's sunday afternoon!", "It's wednesday morning!"];
                 const current = reminder.all();
+                expect(ordered.length).toBe(current.length);
                 while(ordered.length > 0) {
                     expect(current.shift().message.headline).toBe(ordered.shift());
                 }
@@ -108,8 +138,17 @@ describe("Reminders", () => {
                                 reminder.close(reminder.next());
                             })
         
-                            it("And it should return the next reminder", () => {
+                            it("it should return the next reminder", () => {
                                 expect(reminder.next().message.headline).toBe("It's sunday afternoon!");
+                            })
+
+                            it("should completely remove the last event, as it was a one-time", () => {
+                                const ordered = ["It's sunday afternoon!", "It's wednesday morning!", "It's wednesday afternoon!"];
+                                const current = reminder.all();
+                                expect(ordered.length).toBe(current.length);
+                                while(ordered.length > 0) {
+                                    expect(current.shift().message.headline).toBe(ordered.shift());
+                                }
                             })
                         })
                     });

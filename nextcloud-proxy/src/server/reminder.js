@@ -8,7 +8,7 @@ const Reminder = (reminders, dateProvider) => {
     dateProvider = dateProvider || DateProvider;
 
     let innerReminders = [];
-    const sortReminders = () => {
+    const sortReminders = (reminders) => {
         innerReminders = [];
         let date = dateProvider();
         for (let day = date.getDay(); day < 7; day++) {
@@ -22,7 +22,7 @@ const Reminder = (reminders, dateProvider) => {
             innerReminders.push(...remindersForDay.sort((a, b) => a.hour > b.hour ? 1 : -1))
         }
     };
-    sortReminders();
+    sortReminders(reminders);
 
     this.all = () => {
         return innerReminders;
@@ -34,6 +34,11 @@ const Reminder = (reminders, dateProvider) => {
         if (now.getDay() === activeReminder.day &&
             now.getUTCHours() >= activeReminder.hour) {
             innerReminders.shift();
+            if (activeReminder.occurences) {
+                activeReminder.occurences--;
+            } 
+
+            if (activeReminder.occurences < 1) return;
             innerReminders.push(activeReminder);
         }
     }
@@ -46,6 +51,10 @@ const Reminder = (reminders, dateProvider) => {
             return activeReminder;
         }
         return null;
+    }
+
+    this.add = (...items) => {
+        sortReminders([...innerReminders, ...items]);
     }
 
     return this;
