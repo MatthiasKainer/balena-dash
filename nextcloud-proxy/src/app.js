@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 https.globalAgent.maxSockets = 1;
 require('dotenv').config();
+const { Reminder } = require("./server/reminder");
 
 const { prepareNext, fillCache } = require("./server/nextcloud");
 
@@ -46,6 +47,17 @@ const file = (pathname, res, transform = (data) => data) => {
 const init = () => {
     fillCache("");
 }
+const reminders = [
+    {
+        day: 0,
+        hour: 13,
+        message: {
+            headline: "It's sunday afternoon!",
+            text: "Did you bring out the trash yet?"
+        }
+    },
+]
+const reminder = Reminder(reminders)
 
 const startServer = () => {
     http.createServer(function (req, res) {
@@ -70,6 +82,16 @@ const startServer = () => {
                 prepareNext();
                 return data;
             });
+        }
+        else if (url === '/reminder') {
+            if (method === "POST") {
+                reminder.close();
+                res.end("OK")
+            } else {
+                res.setHeader('Content-type', mimeType[".json"]);
+                console.log(reminder.next());
+                res.end(JSON.stringify(reminder.next()));
+            }
         }
         else if (url.indexOf('/random.jpg') === 0) {
             file('random.jpg', res, (data) => {

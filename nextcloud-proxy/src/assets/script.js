@@ -1,48 +1,44 @@
 let lastTrashDay = new Date(0);
-
-const reminders = [
-    {
-        day: 0,
-        hour: 15,
-        message: {
-            headline: "It's sunday afternoon!",
-            text: "Did you bring out the trash yet?"
-        }
-    }
-]
-
 const container = document.getElementById("container");
 const img = document.getElementsByClassName("background")[0];
 
 ["click", "touchstart", "touchend", "touchmove"].forEach(eventType => {
     container.addEventListener(eventType, () => {
         container.style.display = "none";
-        lastTrashDay = getNow();
+        fetch('/reminder', {
+            method: "POST" }).then(() => {
+
+            })
+        reminders();
     });
     img.addEventListener(eventType, () => {
         changeBackgroundImage();
     })
 });
 
-const activeReminder = reminders[0];
+let reminderTimeout;
 
-function trashReminder() {
-    setTimeout(() => {
-        const now = getNow();
-        const day = now.getDay();
-        if (day === activeReminder.day &&
-            now.getHours() > activeReminder.hour &&
-            !sameDay(now, lastTrashDay)) {
-            const { message } = activeReminder;
-            container.querySelector(".message h1").innerText = message.headline;
-            container.querySelector(".message p").innerText = message.text;
-            container.style.display = "block";
-        }
-        trashReminder();
-    }, 60 * 1000)
+function reminders() {
+    if (reminderTimeout) clearTimeout(reminderTimeout);
+    remindersTimeout = setTimeout(() => {
+        fetch('/reminder')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (activeReminder) {
+                if (activeReminder !== null) {
+                    const { message } = activeReminder;
+                    container.querySelector(".message h1").innerText = message.headline;
+                    container.querySelector(".message p").innerText = message.text;
+                    container.style.display = "block";
+                } else {
+                    reminders();
+                }
+            });
+    }, 1000)
 }
 
-trashReminder()
+reminders()
 
 function sameDay(d1, d2) {
     return d1.getFullYear() === d2.getFullYear() &&

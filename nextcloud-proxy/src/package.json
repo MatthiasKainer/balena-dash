@@ -4,24 +4,13 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^6.2.0",
     "jest": "^24.1.0"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "html",
-      "text"
-    ],
-    "coveragePathIgnorePatterns": [
-      "node_modules",
-      "request.js"
-    ]
   }
 }
