@@ -5,10 +5,8 @@ services:
     build: ./wpe
     depends_on:
       - nextcloud
+    privileged: true
     network_mode: host
-    devices:
-      - "/dev/fb0:/dev/fb0"
-      - "/dev/vchiq:/dev/vchiq"
   nextcloud:
     restart: always
     build: ./nextcloud-proxy

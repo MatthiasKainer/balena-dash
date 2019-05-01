@@ -25,9 +25,9 @@ function trashReminder() {
     setTimeout(() => {
         const now = getNow();
         const day = now.getDay();
-        if (day === activeReminder.day
-            && now.getHours() > activeReminder.hour
-            && !sameDay(now, lastTrashDay)) {
+        if (day === activeReminder.day &&
+            now.getHours() > activeReminder.hour &&
+            !sameDay(now, lastTrashDay)) {
             const { message } = activeReminder;
             container.querySelector(".message h1").innerText = message.headline;
             container.querySelector(".message p").innerText = message.text;
