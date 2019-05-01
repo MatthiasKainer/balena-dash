@@ -1,18 +1,36 @@
 let lastTrashDay = new Date(0);
+
+const reminders = [
+    {
+        day: 0,
+        hour: 15,
+        message: {
+            headline: "It's sunday afternoon!",
+            text: "Did you bring out the trash yet?"
+        }
+    }
+]
+
 const container = document.getElementById("container");
-container.addEventListener('click', () => {
-    container.style.display = "none";
-    lastTrashDay = getNow();
+["click", "touchstart"].forEach(eventType => {
+    container.addEventListener(eventType, () => {
+        container.style.display = "none";
+        lastTrashDay = getNow();
+    });
 });
 
-function trashReminder() {
+const activeReminder = reminders[0];
 
+function trashReminder() {
     setTimeout(() => {
         const now = getNow();
         const day = now.getDay();
-        if (day === 0 
-            && now.getHours() > 15 
+        if (day === activeReminder.day
+            && now.getHours() > activeReminder.hour
             && !sameDay(now, lastTrashDay)) {
+            const { message } = activeReminder;
+            container.querySelector(".message h1").innerText = message.headline;
+            container.querySelector(".message p").innerText = message.text;
             container.style.display = "block";
         }
         trashReminder();
@@ -102,18 +120,8 @@ function changeBackgroundImage() {
         .then(function (myJson) {
             const img = document.getElementsByClassName("background")[0];
             img.style.backgroundImage = `url("${myJson.result}")`;
-            return;
-            const date = document.getElementById("date");
-            while (date.firstChild) {
-                date.removeChild(date.firstChild);
-            }
-            create(formatDate(new Date(myJson.meta.time))).forEach(element => {
-                date.appendChild(element);
-            });
         });
-    //const img = document.getElementsByClassName("background")[0];
-    //img.style.backgroundImage = `url("random.jpg?t=${new Date().getTime()}")`;
 }
 
 setInterval(() => showTime(), 50);
-setInterval(() => changeBackgroundImage(), 30 * 1000);
+setInterval(() => changeBackgroundImage(), 60 * 1000);
