@@ -39,7 +39,11 @@ const prepareNext = async () => {
         console.log("oh dear...");
         console.log(err);
     }
-    if (cache.size < 1) fillCache("");
+    if (cache.size <= 1) {
+        console.log("recreate cache")
+        cache = new Set();
+        fillCache("");
+    }
 }
 
 module.exports = {prepareNext, fillCache, loadedAlbums, cache};

@@ -25,6 +25,9 @@ const file = (pathname, res, transform = (data) => data) => {
             console.log(`File ${pathname} not found!`)
             res.statusCode = 404;
             res.end(`File ${pathname} not found!`);
+            try {
+                transform({});
+            } catch (err) {}
             return;
         }
 
