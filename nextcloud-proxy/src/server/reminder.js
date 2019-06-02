@@ -31,14 +31,17 @@ const Reminder = (reminders, dateProvider) => {
     this.close = () => {
         let now = dateProvider();
         const activeReminder = innerReminders[0];
+        console.log(`Closing reminder`, activeReminder)
         if (now.getDay() === activeReminder.day &&
             now.getUTCHours() >= activeReminder.hour) {
             innerReminders.shift();
             if (activeReminder.occurences) {
                 activeReminder.occurences--;
-            } 
+            }
 
             if (activeReminder.occurences < 1) return;
+            now.setDate(activeReminder.date + 7);
+            activeReminder.date = now.getUTCDate();
             innerReminders.push(activeReminder);
         }
     }
@@ -47,6 +50,11 @@ const Reminder = (reminders, dateProvider) => {
         let now = dateProvider();
         const activeReminder = innerReminders[0];
         if (now.getDay() === activeReminder.day &&
+            !activeReminder.date) {
+            activeReminder.date = now.getUTCDate();
+        }
+        if (now.getDay() === activeReminder.day &&
+            now.getUTCDate() === activeReminder.date &&
             now.getUTCHours() >= activeReminder.hour) {
             return activeReminder;
         }

@@ -1,6 +1,39 @@
 const { Reminder } = require("./reminder");
 
 describe("Reminders", () => {
+    describe("Given I have only one reminder", () => {
+        const reminders = [
+            {
+                day: 3,
+                hour: 15,
+                message: {
+                    headline: "It's wednesday afternoon!",
+                    text: "Did you bring out the trash yet?"
+                }
+            }
+        ]; 
+        let date;
+        let dateProvider = () => new Date(Date.parse(date))
+        let reminder;
+
+        beforeEach(() => {
+            date = "2019-05-01T15:00:00.000Z";
+            reminder = Reminder(reminders, dateProvider);
+        })
+        it("should return the active event", () => {
+            expect(reminder.next().message.headline).toBe("It's wednesday afternoon!");
+        })
+        describe("When closing the event", () => {
+            beforeEach(() => {
+                reminder.close()
+            })
+
+            it("should run the reminder only once per week", () => {
+                expect(reminder.next()).toBeNull();
+            })
+        })
+    })
+
     describe("Given I have a predefined set of reminders", () => {
         const reminders = [
             {
