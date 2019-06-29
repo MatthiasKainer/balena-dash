@@ -1,4 +1,4 @@
-const request = require('./request');
+const request = require('../../server/request');
 jest.mock("./request");
 
 const mockDirectories = require("./testdata");

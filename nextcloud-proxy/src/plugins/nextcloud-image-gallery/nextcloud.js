@@ -1,6 +1,6 @@
 const { listFiles, download } = require("./request");
 
-const cache = new Set();
+let cache = new Set();
 const loadedAlbums = new Set();
 
 const fillCache = async (location) => {

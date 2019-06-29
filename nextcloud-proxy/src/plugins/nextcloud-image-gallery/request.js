@@ -1,21 +1,6 @@
 const https = require('https');
 const fs = require('fs');
 
-function asImg(response) {
-    return new Promise((resolve, reject) => {
-        try {
-            var file = fs.createWriteStream('random.jpg');
-            response.pipe(file);
-            file.on('finish', function () {
-                file.close(() => resolve());
-            });
-        } catch (err) {
-            console.log(err);
-            reject(err);
-        }
-    });
-}
-
 function asDataItem(response, meta) {
     return new Promise((resolve, reject) => {
         try {
@@ -23,10 +8,11 @@ function asDataItem(response, meta) {
             let body = "data:" + response.headers["content-type"] + ";base64,";
             response.on('data', (data) => { body += data});
             response.on('end', () => {
-                fs.writeFile('next.json', JSON.stringify({ 
+                fs.writeFile(`${__dirname}/__data/next.json`, JSON.stringify({ 
                     result: body, 
                     meta
                 }), { encoding: "UTF-8"}, (err) => {
+                    console.log("Stored data file", `${__dirname}/__data/next.json`)
                     return err ? reject(err) : resolve();
                 })
             });
