@@ -1,37 +1,4 @@
-const template = document.createElement('template');
 
-template.innerHTML = `
-  <style>
-  .clock {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 200px;
-    padding-top: 40px;
-    height: 60px;
-    font-size: 50px;
-    color: white;
-    opacity: 0.7;
-    text-align: right;
-    overflow: visible;
-    vertical-align: text-bottom;
-    z-index: 1000;
-}
-
-.clock * {
-    margin-top: 5px;
-}
-
-.clock .character {
-    display: inline-block;
-    width: 24px;
-    text-align: right;
-    padding: 5px 0;
-    overflow: visible;
-}
-  </style>
-  <div id="clock" class="clock"></div>
-`;
 
 function getNow() {
     const offset = 2;
@@ -62,50 +29,151 @@ function join(...elements) {
         return document.createTextNode(current);
     })
 }
+function getCurrentHoursMinutesSeconds() {
+    const date = getNow();
+    let hours = date.getHours(); // 0 - 23
+    let minutes = date.getMinutes(); // 0 - 59
+    let seconds = date.getSeconds(); // 0 - 59
+
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+    return { hours, minutes, seconds };
+}
+function getClockDigits() {
+    const { hours, minutes, seconds } = getCurrentHoursMinutesSeconds();
+
+    // create elements for each digit to avoid jumping of the ui when the 1 is shorter then the 0
+    return join(...create(hours), ":", ...create(minutes), ":", ...create(seconds));
+}
+
+const digitalClock = "digital-clock";
+const clockTemplate = document.createElement('template');
+const digitTemplate = document.createElement('template');
+
+clockTemplate.innerHTML = `
+<style>
+  .clock {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 200px;
+    padding-top: 40px;
+    height: 60px;
+    font-size: 50px;
+    color: white;
+    opacity: 0.7;
+    text-align: right;
+    overflow: visible;
+    vertical-align: text-bottom;
+    z-index: 1000;
+}
+span {
+    display:inline-block;
+}
+#hours, #minutes, #seconds {
+    margin-right:12px;
+}
+</style>
+<div id="clock" class="clock">
+    <span id="hours">
+        <${digitalClock}-character digit="0"></${digitalClock}-character>
+        <${digitalClock}-character digit="0"></${digitalClock}-character>
+    </span><span class="sep">:</span><span id="minutes">
+        <${digitalClock}-character digit="0"></${digitalClock}-character>
+        <${digitalClock}-character digit="0"></${digitalClock}-character>
+    </span><span class="sep">:</span><span id="seconds">
+        <${digitalClock}-character digit="0"></${digitalClock}-character>
+        <${digitalClock}-character digit="0"></${digitalClock}-character>
+    </span>
+</div>
+`;
+
+digitTemplate.innerHTML = `
+<style>
+  .character {
+    display: inline-block;
+    width: 18px;
+    text-align: right;
+    padding: 5px 0;
+    overflow: visible;
+}
+</style>
+<span class="character"></span>
+`;
+
+class ClockCharacter extends HTMLElement {
+    constructor() {
+        super();
+        this.root = this.attachShadow({ mode: "closed" });
+        this.root.appendChild(digitTemplate.content.cloneNode(true));
+        this.character = this.root.querySelector(".character");
+    }
+
+    static get observedAttributes() {
+        return ['digit'];
+      }
+
+    attributeChangedCallback(attrName, oldVal, newVal) {
+        if (attrName === "digit" && oldVal !== newVal) {
+            this.setAttribute(attrName, newVal);
+            this._showDigit();
+        }
+    }
+
+    get digit() {
+        return this.getAttribute("digit");
+    }
+
+    set digit(value) {
+        this.setAttribute("digit", value);
+    }
+
+    connectedCallback() {
+        this._showDigit();
+    }
+
+    _showDigit() {
+        this.character.innerText = this.getAttribute("digit");
+    }
+}
 
 class DigitalClock extends HTMLElement {
     constructor() {
         super();
-        registerHandler("digital-clock", {
+        this.root = this.attachShadow({ mode: "closed" });
+        this.root.appendChild(clockTemplate.content.cloneNode(true));
+        this.clockContainer = this.root.getElementById("clock");
+
+        // register in dashboards event loop
+        registerHandler(digitalClock, {
             ticks: 1,
             duration: 1,
             run: () => this._showTime()
         });
-        this.root = this.attachShadow({ mode: "open" });
-        this.root.appendChild(template.content.cloneNode(true));
     }
-    
+
     connectedCallback() {
         this._showTime();
     }
 
     _showTime() {
         try {
-            var date = getNow();
-            var h = date.getHours(); // 0 - 23
-            var m = date.getMinutes(); // 0 - 59
-            var s = date.getSeconds(); // 0 - 59
-    
-            h = (h < 10) ? "0" + h : h;
-            m = (m < 10) ? "0" + m : m;
-            s = (s < 10) ? "0" + s : s;
-    
-            var time = join(...create(h), ":", ...create(m), ":", ...create(s));
-            var clock = this.root.getElementById("clock");
-            while (clock.firstChild) {
-                clock.removeChild(clock.firstChild);
-            }
-            time.forEach(element => {
-                clock.appendChild(element);
+            const time = getCurrentHoursMinutesSeconds();
+            ["hours", "minutes", "seconds"].forEach(slot => {
+                const clockCharacters = this.clockContainer.querySelectorAll(`#${slot} ${digitalClock}-character`);
+                [...time[slot].toString()].map((digit, index) => {
+                    clockCharacters[index].digit = digit;
+                })
             });
         } catch (err) {
-    
+            console.log(err);
         }
     }
-    
 }
 
-window.customElements.define("digital-clock", DigitalClock);
+window.customElements.define(`${digitalClock}-character`, ClockCharacter);
+window.customElements.define(digitalClock, DigitalClock);
 
 
 

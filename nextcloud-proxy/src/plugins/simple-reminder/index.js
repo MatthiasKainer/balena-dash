@@ -1,7 +1,6 @@
 const id = "simple-reminder"
-const {mimeType} = require("../../net")
+const {mimeType, loadFile} = require("../../net")
 const {Reminder} = require("./reminder");
-const {loadFile} = require("../../net");
 
 let reminder;
 

@@ -1,8 +1,8 @@
-const template = document.createElement('template');
+const clockTemplate = document.createElement('template');
 
 const nextcloudUrl = `/nextcloud/gallery/next`;
 
-template.innerHTML = `
+clockTemplate.innerHTML = `
   <style>
   .background {
     width: 100%;
@@ -36,7 +36,7 @@ class NextCloudGallery extends HTMLElement {
             })
         });
         this.root = this.attachShadow({ mode: "open" });
-        this.root.appendChild(template.content.cloneNode(true));
+        this.root.appendChild(clockTemplate.content.cloneNode(true));
     }
     
     connectedCallback() {

@@ -1,9 +1,9 @@
-const template = document.createElement('template');
+const clockTemplate = document.createElement('template');
 
 const reminderBasePath = `/simple-reminder`;
 const reminderUrl = `${reminderBasePath}/reminder`;
 
-template.innerHTML = `
+clockTemplate.innerHTML = `
 <link media="all" rel="stylesheet" href="${reminderBasePath}/css">
   <div id="container">
         <div id="error-box">
@@ -36,7 +36,7 @@ class SimpleReminder extends HTMLElement {
             run: () => this._reminders()
         });
         this.root = this.attachShadow({ mode: "open" });
-        this.root.appendChild(template.content.cloneNode(true));
+        this.root.appendChild(clockTemplate.content.cloneNode(true));
         this.container = this.root.querySelector("#container");
 
         ["click", "touchstart", "touchend", "touchmove"].forEach(eventType => {
