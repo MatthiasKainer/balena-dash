@@ -147,8 +147,8 @@ class DigitalClock extends HTMLElement {
 
         // register in dashboards event loop
         registerHandler(digitalClock, {
-            ticks: 1,
-            duration: 1,
+            ticks: 5,
+            duration: 5,
             run: () => this._showTime()
         });
     }

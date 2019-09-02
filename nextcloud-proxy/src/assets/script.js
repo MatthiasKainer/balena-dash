@@ -6,7 +6,6 @@ function eventLoop() {
         const handler = registeredHandlers[handlerName];
         handler.ticks--;
         if (!handler.stopped && handler.ticks < 0) {
-            console.log(`[Handler] Triggering ${handlerName}`);
             handler.run();
             handler.ticks = handler.duration;
         }
