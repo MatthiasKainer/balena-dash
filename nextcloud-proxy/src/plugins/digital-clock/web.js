@@ -1,7 +1,7 @@
 
 
 function getNow() {
-    const offset = 2;
+    const offset = 1;
     // create Date object for current location
     var d = new Date();
 
