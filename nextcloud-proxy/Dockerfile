@@ -2,7 +2,7 @@ FROM balenalib/raspberrypi3-node:13
 
 RUN mkdir -p /var/nextcloud-proxy
 COPY src/ /var/nextcloud-proxy
-RUN cd /var/nextcloud-proxy && npm i
+RUN cd /var/nextcloud-proxy && npm i --production
 
 COPY go /go
 
