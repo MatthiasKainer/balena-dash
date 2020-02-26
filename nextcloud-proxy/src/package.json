@@ -1,6 +1,6 @@
 {
-  "name": "node-proxy",
-  "version": "1.0.0",
+  "name": "node-nextcloud-proxy",
+  "version": "1.0.3",
   "description": "",
   "main": "app.js",
   "scripts": {
