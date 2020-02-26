@@ -7,9 +7,17 @@ const versionUrl = `/${versionUpgrade}/version`;
 const timeElapsed = (a) =>
     Math.floor((a - new Date(Date.now())) / 1000 * 60 * 60 * 24);
 
+const nextRefresh = () => {
+    const result = new Date(Date.now().getFullYear(), Date.now().getMonth(), Date.now().getDay(), 0, 0, 0);
+    result.setDate(result.getDate() + 1);
+    return result;
+}
+
+const doRefresh = (date) => new Date(Date.now()) > date;
+
 class VersionUpgrade extends HTMLElement {
     currentVersion = undefined;
-    lastRefresh = undefined;
+    nextPlannedRefresh = undefined;
 
     constructor() {
         super();
@@ -27,12 +35,12 @@ class VersionUpgrade extends HTMLElement {
             })
             .then(({ version }) => {
                 if (!this.currentVersion) {
-                    this.lastRefresh = new Date(Date.now());
+                    this.nextPlannedRefresh = nextRefresh();
                     this.currentVersion = version;
                 }
                 if (this.currentVersion !== version) {
                     window.location.reload();
-                } else if (timeElapsed(this.lastRefresh) > 1) {
+                } else if (doRefresh(this.nextPlannedRefresh)) {
                     window.location.reload();
                 }
             });
