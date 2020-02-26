@@ -6,14 +6,6 @@ let reminder;
 
 const setup = () => {
     const reminders = [
-        {
-            day: 0,
-            hour: 15,
-            message: {
-                headline: "It's sunday afternoon!",
-                text: "Did you bring out the trash yet?"
-            }
-        },
     ]
     reminder = Reminder(reminders)
 };

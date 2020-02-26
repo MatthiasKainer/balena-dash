@@ -32,8 +32,10 @@ const prepareNext = async () => {
         console.log(`Loading image ${nextIndex} from set with ${cache.size} elements...`);
         const next = [...cache][nextIndex];
         cache.delete(next);
-        const [id, mtime] = next.split("|");
-        await download(id, mtime);
+        if (next) {
+            const [id, mtime] = next.split("|");
+            await download(id, mtime);
+        }
         console.log('Downloaded new image');
     } catch (err) {
         console.log("oh dear...");
@@ -41,7 +43,7 @@ const prepareNext = async () => {
     }
     if (cache.size <= 1) {
         console.log("recreate cache")
-        cache = new Set();
+        cache.clear();
         fillCache("");
     }
 }

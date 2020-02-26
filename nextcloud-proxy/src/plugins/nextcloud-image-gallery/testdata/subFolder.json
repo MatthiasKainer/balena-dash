@@ -13,6 +13,19 @@
             },
             "permissions": 27,
             "mimetype": "image\/jpeg"
+        },{
+            "path": "Sub\/Folder\/folderimg2.jpg",
+            "nodeid": 13702,
+            "mtime": 1546431466,
+            "etag": "02e807a6b11ff72fc2e9fdcf05431429",
+            "size": 495488,
+            "sharedwithuser": false,
+            "owner": {
+                "uid": "mkainer",
+                "displayname": "Matthias Kainer"
+            },
+            "permissions": 27,
+            "mimetype": "image\/jpeg"
         }
     ],
     "albums": {

@@ -1,10 +1,11 @@
-const request = require('../../server/request');
+const request = require('./request');
 jest.mock("./request");
 
 const mockDirectories = require("./testdata");
 const { prepareNext, fillCache, loadedAlbums, cache } = require("./nextcloud");
 
 describe("nextcloud", () => {
+
     describe("cache", () => {
         it("should handle a missing location correctly", async () => {
             expect(await fillCache()).toBe(undefined);
@@ -34,8 +35,8 @@ describe("nextcloud", () => {
                 await fillCache("");
             });
             it("should add all nodes", () => {
-                expect([...cache].length).toBe(2);
-                expect([...cache]).toEqual(["12316|1547927418", "13701|1546431465"]);
+                expect([...cache].length).toBe(3);
+                expect([...cache]).toEqual(["12316|1547927418", "13701|1546431465", "13702|1546431466"]);
             });
             it("should traverse all directories", () => {
                 expect([...loadedAlbums]).toEqual(["Sub/Folder"])
@@ -50,6 +51,7 @@ describe("nextcloud", () => {
                 Promise.resolve(mockDirectories[location]));
             cache.clear();
             await fillCache("");
+            expect([...cache].length).toBe(3)
         });
 
         describe("and the query fails", () => {
@@ -69,7 +71,7 @@ describe("nextcloud", () => {
                 expect(expectedException).toEqual(null);
             });
             it("should remove the item from the cache", () => {
-                expect([...cache].length).toBe(1)
+                expect([...cache].length).toBe(2)
             })
         });
         describe("and the query works", () => {
@@ -78,6 +80,7 @@ describe("nextcloud", () => {
                 request.download.mockImplementation(() =>
                     Promise.resolve());
                 await prepareNext();
+                expect([...cache].length).toBe(2)
             })
             it("should download the correct file", async () => {
                 expect(request.download).toBeCalledTimes(1);
@@ -86,14 +89,14 @@ describe("nextcloud", () => {
                 );
             });
             it("should remove the item from the cache", async () => {
-                expect([...cache].length).toBe(1)
+                expect([...cache].length).toBe(2)
             });
 
             describe("until the cache eventually get empty", () => {
                 it("then it should refill the cache", async (done) => {
                     await prepareNext();
                     setImmediate(() => {
-                        expect([...cache].length).toBe(2);
+                        expect([...cache].length).toBe(3);
                         done();
                     });
                 })
