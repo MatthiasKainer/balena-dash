@@ -61,7 +61,7 @@ class DateSetReminder extends HTMLElement {
                 return response.json();
             })
             .then((activeReminder) => {
-                if (activeReminder !== null) {
+                if (activeReminder !== null && !activeReminder.__empty) {
                     const { message } = activeReminder;
                     this.container.querySelector(".message h1").innerText = message.headline;
                     this.container.querySelector(".message p").innerText = message.text;

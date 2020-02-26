@@ -4,13 +4,13 @@ exports[`[date-set-reminder] On a day when one of the middle reminders is active
 Array [
   Object {
     "date": 2020-02-23T15:00:00.000Z,
-    "headline": " Restmülltag!",
+    "headline": "Restmülltag!",
     "text": "",
   },
   Object {
     "date": 2020-03-01T00:00:00.000Z,
     "headline": "",
-    "text": " Heute die Wertstofftonne vor die Tür",
+    "text": "Heute die Wertstofftonne vor die Tür",
   },
 ]
 `;
@@ -18,7 +18,7 @@ Array [
 exports[`[date-set-reminder] On a day when one of the middle reminders is active should give the result when the reminder is active 1`] = `
 Object {
   "date": 2020-02-23T15:00:00.000Z,
-  "headline": " Restmülltag!",
+  "headline": "Restmülltag!",
   "text": "",
 }
 `;
@@ -33,23 +33,23 @@ exports[`[date-set-reminder] When starting the reminder on a specific date shoul
 Array [
   Object {
     "date": 2020-02-09T00:00:00.000Z,
-    "headline": " Restmülltag!",
-    "text": " Heute die schwarze Tonne vor die Tür",
+    "headline": "Restmülltag!",
+    "text": "Heute die schwarze Tonne vor die Tür",
   },
   Object {
     "date": 2020-02-16T00:00:00.000Z,
-    "headline": " Wertstoff!",
-    "text": " Heute die Wertstofftonne vor die Tür",
+    "headline": "Wertstoff!",
+    "text": "Heute die Wertstofftonne vor die Tür",
   },
   Object {
     "date": 2020-02-23T15:00:00.000Z,
-    "headline": " Restmülltag!",
+    "headline": "Restmülltag!",
     "text": "",
   },
   Object {
     "date": 2020-03-01T00:00:00.000Z,
     "headline": "",
-    "text": " Heute die Wertstofftonne vor die Tür",
+    "text": "Heute die Wertstofftonne vor die Tür",
   },
 ]
 `;

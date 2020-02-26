@@ -31,7 +31,7 @@ const Reminder = (reminders, dateProvider) => {
             const nextAppointment = [...innerReminders][0];
             return (nextAppointment && dateProvider() > nextAppointment.date) 
                 ? nextAppointment
-                : null;
+                : { __empty : true };
         },
         done : () => {
             innerReminders = [...innerReminders].slice(1)

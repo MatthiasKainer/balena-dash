@@ -1,7 +1,7 @@
 
 const { prepareNext, fillCache } = require("./nextcloud");
 const {loadFile} = require("../../net")
-const id = "nextcloud/gallery";
+const id = "nextcloud-gallery";
 const webcomponent = "nextcloud-gallery"
 
 const setup = fillCache;
@@ -21,7 +21,6 @@ const endpoints = [
         method: "GET",
         invoke: (req, res) => {
             loadFile(`${__dirname}/__data/random.jpg`, res, undefined, (data) => {
-                prepareNext();
                 return data;
             })
         }

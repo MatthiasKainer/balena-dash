@@ -57,18 +57,18 @@ describe("[date-set-reminder]", () => {
             expect(reminders).toMatchSnapshot()
         })
         it("should give no result before the reminder is active", () => {
-            expect(reminder.next()).toBeNull()
+            expect(reminder.next().__empty).toBeTruthy()
         })
         it("should give the result when the reminder is active", () => {
             currentDate = new Date("2020-02-23T16:10:00")
-            expect(reminder.next()).not.toBeNull()
+            expect(reminder.next().__empty).not.toBeTruthy()
             expect(reminder.next()).toMatchSnapshot()
         })
         it("should give no result once the current result has been deleted", () => {
             currentDate = new Date("2020-02-23T16:10:00")
-            expect(reminder.next()).not.toBeNull()
+            expect(reminder.next().__empty).not.toBeTruthy()
             reminder.done()
-            expect(reminder.next()).toBeNull()
+            expect(reminder.next().__empty).toBeTruthy()
         })
     })
 })

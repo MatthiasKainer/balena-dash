@@ -1,6 +1,8 @@
 const clockTemplate = document.createElement('template');
 
-const nextcloudUrl = `/nextcloud/gallery/next`;
+const key = "nextcloud-gallery";
+
+const nextcloudUrl = `/${key}/next`;
 
 clockTemplate.innerHTML = `
   <style>
@@ -9,7 +11,7 @@ clockTemplate.innerHTML = `
     height: 100%;
     background: no-repeat center center fixed;
     background-size: contain;
-    background-image: url("/nextcloud/gallery/random.jpg");
+    background-image: url("/${key}/random.jpg");
     -webkit-transition-property: background-image 1.5s ease-in 1.5s;
     -moz-transition-property: background-image 1.5s ease-in 1.5s;
     -o-transition-property: background-image 1.5s ease-in 1.5s;
@@ -24,7 +26,7 @@ clockTemplate.innerHTML = `
 class NextCloudGallery extends HTMLElement {
     constructor() {
         super();
-        this._backgroundImage = "/nextcloud/gallery/random.jpg";
+        this._backgroundImage = `/${key}/random.jpg`;
         registerHandler("nextcloud-gallery", {
             ticks: 1500,
             duration: 1500,
@@ -63,7 +65,7 @@ class NextCloudGallery extends HTMLElement {
     
 }
 
-window.customElements.define("nextcloud-gallery", NextCloudGallery);
+window.customElements.define(key, NextCloudGallery);
 
 
 

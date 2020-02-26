@@ -49,7 +49,7 @@ const innerLoad = (pathname, options, transform = (data) => data) => {
 
 const loadFile = (pathname, res, options = { ignoreNotFound : false }, transform = (data) => data) => {
     console.log(`Loading ${pathname}...`)
-    innerLoad(pathname, options, transform)
+    innerLoad(pathname, options)
         .then(({contentType, data}) => {
             res.setHeader('Content-Type', contentType);
             res.end(transform(data));
@@ -57,6 +57,8 @@ const loadFile = (pathname, res, options = { ignoreNotFound : false }, transform
         .catch(({httpCode, message}) => {
             console.log(`[ERROR][${httpCode}] ${message}`);
             res.statusCode = httpCode;
+            // call transform as someone might require it
+            transform({})
             res.end(message);
         });
 }
