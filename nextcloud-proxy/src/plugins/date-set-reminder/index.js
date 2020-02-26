@@ -50,7 +50,7 @@ const setup = () => {
     2020-11-29T17:00:00; Restmülltag!; Heute die schwarze Tonne vor die Tür
     2020-12-13T17:00:00; Restmülltag!; Heute die schwarze Tonne vor die Tür
     2020-12-30T17:00:00; Restmülltag!; Heute die schwarze Tonne vor die Tür
-    2020-02-26T17:00:00; Papier!; Heute die blaue Tonne raus;
+    2020-02-26T17:30:00; Papier!; Heute die blaue Tonne raus;
     2020-03-25T17:00:00; Papier!; Heute die blaue Tonne raus;
     2020-04-22T17:00:00; Papier!; Heute die blaue Tonne raus;
     2020-05-22T17:00:00; Papier!; Heute die blaue Tonne raus;
