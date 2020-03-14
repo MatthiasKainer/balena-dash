@@ -1,9 +1,9 @@
 const http = require('http');
 const https = require('https');
-const fs = require('fs');
 const {join} = require('path');
 https.globalAgent.maxSockets = 1;
 require('dotenv').config();
+
 const plugins = require('./plugins');
 const {mimeType, loadFile, loadFiles} = require("./net");
 
@@ -40,7 +40,7 @@ const startServer = () => {
         }
         else if (url === "/plugins") {
             loadFiles(
-                plugins.map(({__plugin_directory_name}) => `${__plugin_directory_name}/web.js`), 
+                plugins.map(({__plugin_directory_name}) => `${__plugin_directory_name}/web.dist.js`), 
                 res,
                 mimeType[".js"],
                 undefined,
@@ -57,7 +57,7 @@ const startServer = () => {
         });
     }).listen(9000);
 
-    console.log('Server listening on port 9000');
+    console.log('Server listening on http://localhost:9000');
 }
 
 init();
