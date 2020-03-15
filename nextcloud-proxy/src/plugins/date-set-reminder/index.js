@@ -8,7 +8,7 @@ const setup = () => {
     const reminders = `
     date; headline; text;
     2020-03-01T16:00:00; Wertstoff!; Heute die Wertstofftonne vor die Tür
-    2020-03-16T16:00:00; Wertstoff!; Heute die Wertstofftonne vor die Tür
+    2020-03-15T16:00:00; Wertstoff!; Heute die Wertstofftonne vor die Tür
     2020-04-14T16:00:00; Wertstoff!; Heute die Wertstofftonne vor die Tür
     2020-04-26T16:00:00; Wertstoff!; Heute die Wertstofftonne vor die Tür
     2020-05-10T16:00:00; Wertstoff!; Heute die Wertstofftonne vor die Tür
