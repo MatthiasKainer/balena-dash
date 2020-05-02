@@ -36,7 +36,8 @@ var timeElapsed = function timeElapsed(a) {
 };
 
 var nextRefresh = function nextRefresh() {
-  var result = new Date(Date.now().getFullYear(), Date.now().getMonth(), Date.now().getDay(), 0, 0, 0);
+  var noe = Date.now();
+  var result = new Date(noe.getFullYear(), noe.getMonth(), noe.getDay(), 0, 0, 0);
   result.setDate(result.getDate() + 1);
   return result;
 };

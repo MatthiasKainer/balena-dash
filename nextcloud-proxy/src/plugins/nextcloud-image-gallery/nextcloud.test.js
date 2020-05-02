@@ -5,7 +5,6 @@ const mockDirectories = require("./testdata");
 const { prepareNext, fillCache, loadedAlbums, cache } = require("./nextcloud");
 
 describe("nextcloud", () => {
-
     describe("cache", () => {
         it("should handle a missing location correctly", async () => {
             expect(await fillCache()).toBe(undefined);

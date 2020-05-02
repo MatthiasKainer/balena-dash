@@ -26,7 +26,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var clockTemplate = document.createElement('template');
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var clockTemplate = document.createElement("template");
 var key = "nextcloud-gallery";
 var nextcloudUrl = "/".concat(key, "/next");
 clockTemplate.innerHTML = "\n  <style>\n  .background {\n    width: 100%;\n    height: 100%;\n    background: no-repeat center center fixed;\n    background-size: contain;\n    background-image: url(\"/".concat(key, "/random.jpg\");\n    -webkit-transition-property: background-image 1.5s ease-in 1.5s;\n    -moz-transition-property: background-image 1.5s ease-in 1.5s;\n    -o-transition-property: background-image 1.5s ease-in 1.5s;\n    transition: background-image 1.5s ease-in 1.5s;\n    will-change: transition;\n\n}\n  </style>\n  <div class=\"background\"></div>\n");
@@ -40,6 +42,11 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
     _classCallCheck(this, NextCloudGallery);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(NextCloudGallery).call(this));
+
+    _defineProperty(_assertThisInitialized(_this), "nextImages", []);
+
+    _defineProperty(_assertThisInitialized(_this), "prevImages", []);
+
     _this._backgroundImage = "/".concat(key, "/random.jpg");
     registerHandler("nextcloud-gallery", {
       ticks: 1500,
@@ -53,6 +60,9 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
         registeredHandlers["nextcloud-gallery"].ticks = 0;
       });
     });
+
+    _this._loadImagesForPreloading();
+
     _this.root = _this.attachShadow({
       mode: "open"
     });
@@ -68,19 +78,52 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
       this._updateRendering();
     }
   }, {
-    key: "_changeBackgroundImage",
-    value: function _changeBackgroundImage() {
+    key: "_loadImagesForPreloading",
+    value: function _loadImagesForPreloading() {
       var _this2 = this;
 
       try {
         fetch(nextcloudUrl).then(function (response) {
           return response.json();
         }).then(function (myJson) {
-          _this2._backgroundImage = myJson.result;
-
-          _this2._updateRendering();
+          var result = myJson.result;
+          if (_this2.nextImages[_this2.nextImages.length - 1] !== result) _this2.nextImages.push(myJson.result);else console.log("Did not add next image because it's the same as the last");
+          setTimeout(function () {
+            if (_this2.nextImages.length < 100) {
+              _this2._loadImagesForPreloading();
+            }
+          }, 500);
+        })["catch"](function (reason) {
+          console.error("a query failed. retry later", reason);
+          setTimeout(function () {
+            if (_this2.nextImages.length < 100) {
+              _this2._loadImagesForPreloading();
+            }
+          }, 10000);
         });
-      } catch (err) {}
+      } catch (err) {
+        setTimeout(function () {
+          if (_this2.nextImages.length < 100) {
+            _this2._loadImagesForPreloading();
+          }
+        }, 10000);
+      }
+    }
+  }, {
+    key: "_changeBackgroundImage",
+    value: function _changeBackgroundImage() {
+      if (this.nextImages.length < 1) {
+        return this._loadImagesForPreloading();
+      } else if (this.nextImages.length > 10) {
+        this._loadImagesForPreloading();
+      }
+
+      var nextImage = this.nextImages.shift();
+      this.prevImages.push(nextImage);
+      if (this.prevImages.length > 100) this.prevImages.shift();
+      this._backgroundImage = nextImage;
+
+      this._updateRendering();
     }
   }, {
     key: "_updateRendering",
