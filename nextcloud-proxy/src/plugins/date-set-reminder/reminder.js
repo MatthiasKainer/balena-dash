@@ -34,6 +34,8 @@ const Reminder = (reminders, dateProvider) => {
                 : { __empty : true };
         },
         done : () => {
+            if (innerReminders.length < 0) return;
+            if (dateProvider() < innerReminders[0].date) return;
             innerReminders = [...innerReminders].slice(1)
             console.log(`Event marked as done. ${innerReminders.length} reminder(s) loaded. Next reminder:`, innerReminders && innerReminders.length > 0 ? innerReminders[0] : "none")
 
