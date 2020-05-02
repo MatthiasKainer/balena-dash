@@ -35,7 +35,7 @@ const prepareNext = async () => {
         cache.delete(next);
         if (next) {
             const [id, mtime, path] = next.split("|");
-            await download(id, mtime, `https://${process.env.NEXTCLOUD_HOST}/remote.php/webdav/${path}`);
+            await download(id, mtime, `https://${process.env.NEXTCLOUD_HOST}/index.php/f/${id}`);
         }
         console.log('Downloaded new image');
     } catch (err) {

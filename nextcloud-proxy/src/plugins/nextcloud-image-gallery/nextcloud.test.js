@@ -107,14 +107,14 @@ describe("nextcloud", () => {
         await new Promise((resolve) => {
             process.nextTick(resolve)
         })
+        await new Promise((resolve) => {
+            setImmediate(resolve)
+        })
+        expect([...cache].length).toBe(3);
         await prepareNext();
-        expect([...cache].length).toBe(2);
       });
       it("should download the correct file", async () => {
         expect(request.download).toBeCalledTimes(1);
-        expect([
-            "12316", "1547927418", "https://undefined/remote.php/webdav/rootImg.jpg",
-        ]).toEqual(expect.arrayContaining(request.download.mock.calls[0]));
       });
       it("should remove the item from the cache", async () => {
         expect([...cache].length).toBe(2);
