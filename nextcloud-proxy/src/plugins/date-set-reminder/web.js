@@ -40,7 +40,7 @@ class DateSetReminder extends HTMLElement {
         this.root.appendChild(clockTemplate.content.cloneNode(true));
         this.container = this.root.querySelector("#container");
 
-        ["click", "touchstart", "touchend", "touchmove"].forEach(eventType => {
+        ["click"].forEach(eventType => {
             this.container.addEventListener(eventType, () => {
                 this.container.style.display = "none";
                 fetch(reminderUrl, {

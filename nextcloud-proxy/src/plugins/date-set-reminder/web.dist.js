@@ -55,7 +55,7 @@ var DateSetReminder = /*#__PURE__*/function (_HTMLElement) {
     _this.root.appendChild(clockTemplate.content.cloneNode(true));
 
     _this.container = _this.root.querySelector("#container");
-    ["click", "touchstart", "touchend", "touchmove"].forEach(function (eventType) {
+    ["click"].forEach(function (eventType) {
       _this.container.addEventListener(eventType, function () {
         _this.container.style.display = "none";
         fetch(reminderUrl, {
