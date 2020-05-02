@@ -35,10 +35,14 @@ class NextCloudGallery extends HTMLElement {
             duration: 1500,
             run: () => this._changeBackgroundImage(),
         });
-        ["click", "touchstart", "touchend", "touchmove"].forEach((eventType) => {
+        ["swiped-left"].forEach((eventType) => {
             this.addEventListener(eventType, () => {
                 registeredHandlers["nextcloud-gallery"].ticks = 0;
             });
+        });
+        this.addEventListener('swiped-right', (e) => {
+            this.nextImages.unshift(this.prevImages.pop())
+            registeredHandlers["nextcloud-gallery"].ticks = 0;
         });
         this._loadImagesForPreloading();
         this.root = this.attachShadow({ mode: "open" });

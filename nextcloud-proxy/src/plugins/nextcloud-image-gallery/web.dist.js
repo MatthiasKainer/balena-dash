@@ -55,10 +55,16 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
         return _this._changeBackgroundImage();
       }
     });
-    ["click", "touchstart", "touchend", "touchmove"].forEach(function (eventType) {
+    ["swiped-left"].forEach(function (eventType) {
       _this.addEventListener(eventType, function () {
         registeredHandlers["nextcloud-gallery"].ticks = 0;
       });
+    });
+
+    _this.addEventListener('swiped-right', function (e) {
+      _this.nextImages.unshift(_this.prevImages.pop());
+
+      registeredHandlers["nextcloud-gallery"].ticks = 0;
     });
 
     _this._loadImagesForPreloading();
@@ -114,7 +120,7 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
     value: function _changeBackgroundImage() {
       if (this.nextImages.length < 1) {
         return this._loadImagesForPreloading();
-      } else if (this.nextImages.length > 10) {
+      } else if (this.nextImages.length < 10) {
         this._loadImagesForPreloading();
       }
 
