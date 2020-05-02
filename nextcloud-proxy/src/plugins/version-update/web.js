@@ -8,8 +8,8 @@ const timeElapsed = (a) =>
     Math.floor((a - new Date(Date.now())) / 1000 * 60 * 60 * 24);
 
 const nextRefresh = () => {
-    const noe = Date.now();
-    const result = new Date(noe.getFullYear(), noe.getMonth(), noe.getDay(), 0, 0, 0);
+    const now = new Date(Date.now());
+    const result = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 0, 0, 0);
     result.setDate(result.getDate() + 1);
     return result;
 }
