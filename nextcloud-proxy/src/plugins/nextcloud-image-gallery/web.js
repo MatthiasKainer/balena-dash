@@ -40,7 +40,8 @@ class NextCloudGallery extends HTMLElement {
                 registeredHandlers["nextcloud-gallery"].ticks = 0;
             });
         });
-        this.addEventListener('swiped-right', (e) => {
+        this.addEventListener('swiped-right', () => {
+            this.nextImages.unshift(this.prevImages.pop())
             this.nextImages.unshift(this.prevImages.pop())
             registeredHandlers["nextcloud-gallery"].ticks = 0;
         });

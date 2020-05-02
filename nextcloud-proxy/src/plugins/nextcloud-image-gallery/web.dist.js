@@ -61,7 +61,9 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
       });
     });
 
-    _this.addEventListener('swiped-right', function (e) {
+    _this.addEventListener('swiped-right', function () {
+      _this.nextImages.unshift(_this.prevImages.pop());
+
       _this.nextImages.unshift(_this.prevImages.pop());
 
       registeredHandlers["nextcloud-gallery"].ticks = 0;
