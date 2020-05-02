@@ -660,7 +660,7 @@ class QRCodeElement extends HTMLElement {
 
     _setBody(receivedUrl) {
         this.container.querySelector(".message h1").innerText = `Open Pic`;
-        new QRCode(this.shadowRoot.getElementById("qrCode"), receivedUrl);
+        new QRCode(this.shadowRoot.getElementById("qrCode"), {text: receivedUrl, width: 128, height: 128});
         this.container.querySelector(".message #url").innerText = receivedUrl;
         this.container.style.display = "block";
     }

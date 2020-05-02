@@ -1384,6 +1384,7 @@ var QRCodeElement = /*#__PURE__*/function (_HTMLElement) {
     _this.container.style.display = "none";
     ["click"].forEach(function (eventType) {
       _this.container.addEventListener(eventType, function () {
+        _this.shadowRoot.getElementById("qrCode").innerText = "";
         _this.container.style.display = "none";
       });
     });

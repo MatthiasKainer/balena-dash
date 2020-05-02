@@ -94,17 +94,16 @@
 #success-box {
     position: absolute;
     width: 35%;
-    height: 100%;
-    left: 12%;
+    height: 400px;
+    left: 32%;
     background: linear-gradient(to bottom right, #B0DB7D 40%, #99DBB4 100%);
     border-radius: 20px;
     box-shadow: 5px 5px 20px rgba(#CBCDD3, 10%);
-    perspective: 40px;
   }
   
   #qrCode {
     margin: 0 auto;
-    width: 256px;
+    width: 128px;
   }
   #url {
     font-size: xx-small;
