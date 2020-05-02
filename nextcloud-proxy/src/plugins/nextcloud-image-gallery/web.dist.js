@@ -69,6 +69,13 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
       registeredHandlers["nextcloud-gallery"].ticks = 0;
     });
 
+    _this.addEventListener('swiped-up', function () {
+      window.postMessage({
+        type: "matthias-kainer.DisplayUrl",
+        url: _this._currentUrl
+      }, window.location.origin);
+    });
+
     _this._loadImagesForPreloading();
 
     _this.root = _this.attachShadow({
@@ -95,7 +102,7 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
           return response.json();
         }).then(function (myJson) {
           var result = myJson.result;
-          if (_this2.nextImages[_this2.nextImages.length - 1] !== result) _this2.nextImages.push(myJson.result);else console.log("Did not add next image because it's the same as the last");
+          if (_this2.nextImages.length < 1 || _this2.nextImages[_this2.nextImages.length - 1].result !== result) _this2.nextImages.push(myJson);else console.log("Did not add next image because it's the same as the last");
           setTimeout(function () {
             if (_this2.nextImages.length < 100) {
               _this2._loadImagesForPreloading();
@@ -129,7 +136,8 @@ var NextCloudGallery = /*#__PURE__*/function (_HTMLElement) {
       var nextImage = this.nextImages.shift();
       this.prevImages.push(nextImage);
       if (this.prevImages.length > 100) this.prevImages.shift();
-      this._backgroundImage = nextImage;
+      this._backgroundImage = nextImage.result;
+      this._currentUrl = nextImage.meta.url;
 
       this._updateRendering();
     }

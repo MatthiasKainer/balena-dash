@@ -14,7 +14,7 @@ const fillCache = async (location) => {
         throw err;
     }
     const oldSize = cache.size;
-    response.files.forEach(file => cache.add(`${file.nodeid}|${file.mtime}`));
+    response.files.forEach(file => cache.add(`${file.nodeid}|${file.mtime}|${file.path}`));
     Object.keys(response.albums).forEach(albumKey => {
         const album = response.albums[albumKey];
         if (!album.path || album.path === '') return;
@@ -34,8 +34,8 @@ const prepareNext = async () => {
         const next = [...cache][nextIndex];
         cache.delete(next);
         if (next) {
-            const [id, mtime] = next.split("|");
-            await download(id, mtime);
+            const [id, mtime, path] = next.split("|");
+            await download(id, mtime, `https://${process.env.NEXTCLOUD_HOST}/remote.php/webdav/${path}`);
         }
         console.log('Downloaded new image');
     } catch (err) {

@@ -45,6 +45,9 @@ class NextCloudGallery extends HTMLElement {
             this.nextImages.unshift(this.prevImages.pop())
             registeredHandlers["nextcloud-gallery"].ticks = 0;
         });
+        this.addEventListener('swiped-up', () => {
+            window.postMessage({type: `matthias-kainer.DisplayUrl`, url: this._currentUrl}, window.location.origin)
+        })
         this._loadImagesForPreloading();
         this.root = this.attachShadow({ mode: "open" });
         this.root.appendChild(clockTemplate.content.cloneNode(true));
@@ -62,8 +65,8 @@ class NextCloudGallery extends HTMLElement {
                 })
                 .then((myJson) => {
                     const { result } = myJson;
-                    if (this.nextImages[this.nextImages.length - 1] !== result)
-                        this.nextImages.push(myJson.result);
+                    if (this.nextImages.length < 1 || this.nextImages[this.nextImages.length - 1].result !== result)
+                        this.nextImages.push(myJson);
                     else 
                         console.log("Did not add next image because it's the same as the last")
                         setTimeout(() => {
@@ -98,7 +101,8 @@ class NextCloudGallery extends HTMLElement {
         const nextImage = this.nextImages.shift();
         this.prevImages.push(nextImage);
         if (this.prevImages.length > 100) this.prevImages.shift();
-        this._backgroundImage = nextImage;
+        this._backgroundImage = nextImage.result;
+        this._currentUrl = nextImage.meta.url;
         this._updateRendering();
     }
 
